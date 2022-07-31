@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.PocPic.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:theme="@style/Theme.PocPic.AppWidgetContainer">
+
+    <!-- TODO: App icon -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="@string/app_name" />
+    <ImageView
+        android:id="@+id/appwidget_image"
+        style="@style/Widget.PocPic.AppWidget.InnerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/appwidget_text"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rectangle_rounded_corners" />
+
+</RelativeLayout>

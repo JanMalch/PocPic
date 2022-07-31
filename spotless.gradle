@@ -1,0 +1,25 @@
+spotless {
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
+    kotlin {
+        target '**/*.kt'
+        ktlint().userData(['disabled_rules': 'no-wildcard-imports'])
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+}
+
+
+task createSpotlessPreCommitHook(type: Copy) {
+    from file("$rootDir/.githooks")
+    into file("$rootDir/.git/hooks")
+    fileMode 0775
+}
+
+tasks.getByPath(':app:preBuild').dependsOn createSpotlessPreCommitHook
