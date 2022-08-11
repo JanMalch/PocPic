@@ -158,7 +158,7 @@ internal fun updateAppWidget(
                     isFirstResource: Boolean
                 ): Boolean {
                     Timber.e(e, "Drawable cannot be loaded and set in widget image view")
-                    return false // Important to return false so the error placeholder can be placed
+                    return !isFirstResource // return true so previous image is kept
                 }
 
                 override fun onResourceReady(
