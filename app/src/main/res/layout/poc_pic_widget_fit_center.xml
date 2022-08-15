@@ -6,13 +6,12 @@
     android:background="@android:color/transparent"
     >
 
-    <!-- TODO: App icon -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@mipmap/ic_launcher"
         android:contentDescription="@string/app_name" />
     <ImageView
         android:id="@+id/appwidget_image"
