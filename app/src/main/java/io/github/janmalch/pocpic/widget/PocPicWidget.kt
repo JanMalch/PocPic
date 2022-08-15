@@ -14,10 +14,10 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.BaseRequestOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
@@ -148,7 +148,6 @@ internal fun updateAppWidget(
                 use = shape == WidgetShape.FitCenterRectangle,
                 roundingRadius = 64 // FIXME: 24.dp.px
             )
-            .error(R.drawable.ic_undraw_bug_fixing)
             .load(source.imageModel)
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(
@@ -179,12 +178,9 @@ internal fun updateAppWidget(
     }
 }
 
-private fun <T : BaseRequestOptions<T>?> BaseRequestOptions<T>.useCircleCrop(use: Boolean): BaseRequestOptions<T> =
-    if (use) this.circleCrop() else this
+private fun <T> RequestBuilder<T>.useCircleCrop(use: Boolean) = if (use) this.circleCrop() else this
 
-private fun <T : BaseRequestOptions<T>?> BaseRequestOptions<T>.useRoundedCorners(
+private fun <T> RequestBuilder<T>.useRoundedCorners(
     use: Boolean,
     roundingRadius: Int
-): BaseRequestOptions<T> =
-    // if (use && roundingRadius > 0) this.transform(RoundedCorners(roundingRadius)) else this
-    if (use && roundingRadius > 0) this.apply(RequestOptions.bitmapTransform(RoundedCorners(roundingRadius))) else this
+) = if (use && roundingRadius > 0) this.apply(RequestOptions.bitmapTransform(RoundedCorners(roundingRadius))) else this
