@@ -18,13 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.janmalch.pocpic.AppViewModel
 import io.github.janmalch.pocpic.R
 import io.github.janmalch.pocpic.ui.components.ImageWithSource
 
 @Composable
 fun PhotoScreen(
-    vm: AppViewModel,
+    vm: CurrentSourceViewModel,
     goToConfig: () -> Unit,
 ) {
     Scaffold(
@@ -49,7 +48,7 @@ fun PhotoScreen(
                 Box(
                     modifier = Modifier
                         .clickable {
-                            vm.nextSource()
+                            vm.next()
                         }
                         .padding(innerPadding)
                 ) {

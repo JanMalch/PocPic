@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.request.RequestOptions
 import com.google.modernstorage.photopicker.PhotoPicker
 import com.skydoves.landscapist.glide.GlideImage
-import io.github.janmalch.pocpic.AppViewModel
 import io.github.janmalch.pocpic.R
 import io.github.janmalch.pocpic.data.SourceFactoryConfig
 import io.github.janmalch.pocpic.extensions.getFileName
@@ -61,7 +60,7 @@ import io.github.janmalch.pocpic.ui.components.FullScreenDialog
 
 @Composable
 fun ConfigScreen(
-    vm: AppViewModel,
+    vm: FactoriesViewModel,
     goBack: () -> Unit
 ) {
     var openDialog by remember {

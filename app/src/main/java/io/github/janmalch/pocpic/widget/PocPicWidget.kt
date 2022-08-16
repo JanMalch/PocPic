@@ -122,9 +122,7 @@ internal fun updateAppWidget(
             PendingIntent.getActivity(
                 context,
                 0,
-                Intent(context, MainActivity::class.java).apply {
-                    putExtra(MainActivity.EXTRA_INITIAL_SOURCE, source)
-                },
+                Intent(context, MainActivity::class.java),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
         )
@@ -142,7 +140,6 @@ internal fun updateAppWidget(
         Glide
             .with(context.applicationContext)
             .asBitmap()
-            .diskCacheStrategy(source.cacheStrategy.strategy)
             .useCircleCrop(use = shape == WidgetShape.Circle)
             .useRoundedCorners(
                 use = shape == WidgetShape.FitCenterRectangle,

@@ -3,7 +3,6 @@ package io.github.janmalch.pocpic.data
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
-import io.github.janmalch.pocpic.models.DiskCacheStrategyEnum
 import io.github.janmalch.pocpic.models.PictureSource
 
 sealed class PictureSourceFactory {
@@ -47,7 +46,6 @@ class RemotePictureSourceFactory(
         return PictureSource(
             label = label,
             imageModel = uriBuilder.build(),
-            cacheStrategy = if (cacheable) DiskCacheStrategyEnum.AUTOMATIC else DiskCacheStrategyEnum.NONE
         )
     }
 }

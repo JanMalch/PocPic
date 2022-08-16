@@ -9,13 +9,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.janmalch.pocpic.AppViewModel
 import io.github.janmalch.pocpic.ui.config.ConfigScreen
+import io.github.janmalch.pocpic.ui.config.FactoriesViewModel
+import io.github.janmalch.pocpic.ui.photo.CurrentSourceViewModel
 import io.github.janmalch.pocpic.ui.photo.PhotoScreen
 
 @Composable
 fun MainScreen(
-    vm: AppViewModel = viewModel()
+    currentVm: CurrentSourceViewModel = viewModel(),
+    factoriesVm: FactoriesViewModel = viewModel(),
 ) {
     val navController = rememberNavController()
 
@@ -25,12 +27,12 @@ fun MainScreen(
     ) {
         NavHost(navController = navController, startDestination = NavScreen.Photo.route) {
             composable(NavScreen.Photo.route) {
-                PhotoScreen(vm = vm) {
+                PhotoScreen(vm = currentVm) {
                     navController.navigate(NavScreen.Config.route)
                 }
             }
             composable(NavScreen.Config.route) {
-                ConfigScreen(vm = vm) {
+                ConfigScreen(vm = factoriesVm) {
                     navController.navigateUp()
                 }
             }
