@@ -40,7 +40,7 @@ class PocPicWidget : AppWidgetProvider() {
     ) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, null)
+            updateAppWidget(context, appWidgetId, null)
         }
     }
 
@@ -60,7 +60,7 @@ class PocPicWidget : AppWidgetProvider() {
             val thisAppWidgetComponentName = ComponentName(context.packageName, javaClass.name)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidgetComponentName)
             for (appWidgetId in appWidgetIds) {
-                updateAppWidget(context, appWidgetManager, appWidgetId, source)
+                updateAppWidget(context, appWidgetId, source)
             }
         }
     }
@@ -96,12 +96,10 @@ class PocPicWidget : AppWidgetProvider() {
 
 internal fun updateAppWidget(
     context: Context,
-    appWidgetManager: AppWidgetManager,
     appWidgetId: Int,
     source: PictureSource?,
     shape: WidgetShape = WidgetShape.load(context, appWidgetId)
 ) {
-    Timber.d("Update widget with $source and $shape")
     if (source == null) {
         return
     }
@@ -113,8 +111,6 @@ internal fun updateAppWidget(
             WidgetShape.Circle -> R.layout.poc_pic_widget_fit_center
             WidgetShape.CenterCropRectangle -> R.layout.poc_pic_widget_center_crop
             else -> R.layout.poc_pic_widget_fit_center
-        }.also {
-            Timber.d("Using $it (${R.layout.poc_pic_widget_center_crop})")
         }
     ).apply {
         setOnClickPendingIntent(
