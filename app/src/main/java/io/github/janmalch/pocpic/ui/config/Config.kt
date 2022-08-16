@@ -370,13 +370,10 @@ fun SourceListItem(
             },
             icon = { Icon(Icons.Filled.Delete, contentDescription = null) },
             title = {
-                // FIXME: i18n
-                Text(text = "Delete source")
+                Text(text = stringResource(id = R.string.delete_source))
             },
             text = {
-                Text(
-                    "Are you sure you want to delete this source? This cannot be undone."
-                )
+                Text(text = stringResource(id = R.string.delete_source_confirmation_text))
             },
             confirmButton = {
                 TextButton(
@@ -385,7 +382,7 @@ fun SourceListItem(
                         onRemove()
                     },
                 ) {
-                    Text("Delete")
+                    Text(text = stringResource(id = R.string.delete))
                 }
             },
             dismissButton = {
@@ -394,7 +391,7 @@ fun SourceListItem(
                         openDialog.value = false
                     }
                 ) {
-                    Text("Cancel")
+                    Text(text = stringResource(id = R.string.cancel))
                 }
             }
         )
