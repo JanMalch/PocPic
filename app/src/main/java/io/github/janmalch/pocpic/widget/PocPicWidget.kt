@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
 import com.bumptech.glide.request.target.Target
 import io.github.janmalch.pocpic.R
+import io.github.janmalch.pocpic.extensions.dpToPx
 import io.github.janmalch.pocpic.models.PictureSource
 import io.github.janmalch.pocpic.ui.main.MainActivity
 import timber.log.Timber
@@ -139,7 +140,7 @@ internal fun updateAppWidget(
             .useCircleCrop(use = shape == WidgetShape.Circle)
             .useRoundedCorners(
                 use = shape == WidgetShape.FitCenterRectangle,
-                roundingRadius = 64 // FIXME: 24.dp.px
+                roundingRadius = 32.dpToPx(context)
             )
             .load(source.imageModel)
             .listener(object : RequestListener<Bitmap> {
