@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -101,4 +102,7 @@ dependencies {
 
     // immutable collections
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+
+    // serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 }

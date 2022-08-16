@@ -32,15 +32,20 @@
     <string name="corner_radius_explanation">Corner radius is only applicable to the rectangle shape.</string>
     <string name="select_shape">Select shape</string>
     <string name="shape_circle">Circle</string>
-    <string name="shape_circle_explanation">TODO EXPLANATION CIRCLE</string>
-    <string name="shape_square">Square</string>
-    <string name="shape_square_explanation">TODO EXPLANATION SQUARE</string>
-    <string name="shape_center_crop_rectangle">TODO CENTER CROP</string>
-    <string name="shape_center_crop_rectangle_explanation">TODO CENTER CROP EXPLANATION</string>
-    <string name="shape_fit_center_rectangle_explanation">TODO FIT CENTER EXPLANATION</string>
-    <string name="shape_fit_center_rectangle">TODO FIT CENTER</string>
+    <string name="shape_circle_explanation">Crops a circle around the center of the picture.</string>
+    <string name="shape_center_crop_rectangle">Center Crop</string>
+    <string name="shape_center_crop_rectangle_explanation">Fill the entire widget, but picture might be cropped.</string>
+    <string name="shape_fit_center_rectangle">Fit Center</string>
+    <string name="shape_fit_center_rectangle_explanation">Show entire picture, but might not fill the entire widget.</string>
     <string name="delete_source">Delete source</string>
     <string name="delete_source_confirmation_text">Are you sure you want to delete this source? This cannot be undone.</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="widget_shapes_headline">Widget shape</string>
+    <string name="refresh_duration_input_explanation">Minimum is 30 minutes. All PocPic widgets use the same refresh interval.</string>
+    <string name="refresh_duration_input">Refresh interval in minutes</string>
+    <string name="refresh_widgets_input_explanation">Disable this if you only show one image.</string>
+    <string name="refresh_widgets_input">Enable periodic widget updates</string>
+    <string name="configure_widget">Configure widget</string>
+    <string name="note_before_save">You can change these options any time.</string>
 </resources>
