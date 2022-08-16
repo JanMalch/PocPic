@@ -82,7 +82,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context,
+                    context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
                 )
