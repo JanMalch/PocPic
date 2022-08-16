@@ -1,8 +1,10 @@
 package io.github.janmalch.pocpic
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +14,7 @@ import io.github.janmalch.pocpic.data.SourceFactoryConfig
 import io.github.janmalch.pocpic.data.SourceFactoryConfigRepository
 import io.github.janmalch.pocpic.extensions.combineWith
 import io.github.janmalch.pocpic.extensions.randomUnlikeOrNull
+import io.github.janmalch.pocpic.models.PictureSource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,11 +30,22 @@ class AppViewModel @Inject constructor(
     }
 
     private val nextSourceTrigger = MutableLiveData<Unit>()
-    val source = factories.combineWith(nextSourceTrigger) { factories, _ ->
+    private val triggeredSources = factories.combineWith(nextSourceTrigger) { factories, _ ->
         previousFactory = factories
             ?.values
             ?.randomUnlikeOrNull(previousFactory)
         previousFactory?.nextPictureSource()
+    }
+
+    private var nextManualSource: PictureSource? = null
+
+    val source: LiveData<PictureSource?> = liveData {
+        val consumedSource = nextManualSource?.let { emit(it) } != null
+        if (consumedSource) {
+            nextManualSource = null
+        } else {
+            emitSource(triggeredSources)
+        }
     }
 
     fun insertOrReplace(vararg config: SourceFactoryConfig) = viewModelScope.launch {
@@ -44,5 +58,9 @@ class AppViewModel @Inject constructor(
 
     fun nextSource() {
         nextSourceTrigger.value = nextSourceTrigger.value
+    }
+
+    fun provideInitialSource(source: PictureSource?) {
+        nextManualSource = source
     }
 }
