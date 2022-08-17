@@ -10,7 +10,7 @@ private const val PREF_PREFIX_KEY = "appwidget_"
 
 enum class WidgetShape(@StringRes val label: Int, @StringRes val explanation: Int) {
     Circle(R.string.shape_circle, R.string.shape_circle_explanation),
-    Square(R.string.shape_square, R.string.shape_square_explanation),
+    // Square(R.string.shape_square, R.string.shape_square_explanation),
     CenterCropRectangle(R.string.shape_center_crop_rectangle, R.string.shape_center_crop_rectangle_explanation),
     FitCenterRectangle(R.string.shape_fit_center_rectangle, R.string.shape_fit_center_rectangle_explanation);
 

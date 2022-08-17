@@ -32,15 +32,16 @@
     <string name="corner_radius_explanation">Corner radius is only applicable to the rectangle shape.</string>
     <string name="select_shape">Select shape</string>
     <string name="shape_circle">Circle</string>
-    <string name="shape_circle_explanation">TODO EXPLANATION CIRCLE</string>
+    <string name="shape_circle_explanation">Crops the biggest circle from the center.</string>
     <string name="shape_square">Square</string>
-    <string name="shape_square_explanation">TODO EXPLANATION SQUARE</string>
-    <string name="shape_center_crop_rectangle">TODO CENTER CROP</string>
-    <string name="shape_center_crop_rectangle_explanation">TODO CENTER CROP EXPLANATION</string>
-    <string name="shape_fit_center_rectangle_explanation">TODO FIT CENTER EXPLANATION</string>
-    <string name="shape_fit_center_rectangle">TODO FIT CENTER</string>
+    <string name="shape_square_explanation">Crops the biggest square from the center.</string>
+    <string name="shape_center_crop_rectangle">Center Crop</string>
+    <string name="shape_center_crop_rectangle_explanation">Fills the entire widget, but picture might be cropped.</string>
+    <string name="shape_fit_center_rectangle">Fit Center</string>
+    <string name="shape_fit_center_rectangle_explanation">Shows entire picture, but might not fill the entire widget.</string>
     <string name="delete_source">Delete source</string>
     <string name="delete_source_confirmation_text">Are you sure you want to delete this source? This cannot be undone.</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="swap_picture">Swap picture</string>
 </resources>

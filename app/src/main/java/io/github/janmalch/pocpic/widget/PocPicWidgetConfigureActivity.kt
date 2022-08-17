@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.janmalch.pocpic.data.SourceProvider
 import io.github.janmalch.pocpic.ui.theme.PocPicTheme
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 /**
  * The configuration screen for the [PocPicWidget] AppWidget.
  */
+@AndroidEntryPoint
 class PocPicWidgetConfigureActivity : ComponentActivity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
