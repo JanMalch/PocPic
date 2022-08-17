@@ -67,9 +67,9 @@ class PocPicWidget : AppWidgetProvider() {
     }
 
     override fun onEnabled(context: Context) {
-        // FIXME: interval from preferences
+        // TODO: make duration configurable?
         val periodicWorkRequest =
-            PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofMinutes(30L))
+            PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofDays(1L))
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiresBatteryNotLow(true)
