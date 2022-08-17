@@ -31,7 +31,7 @@ class SourceProvider @Inject constructor(
     @ApplicationContext private val appContext: Context
 ) {
 
-    suspend fun yieldSource(useStoredSource: Boolean = true): PictureSource? {
+    suspend fun yieldSource(useStoredSource: Boolean): PictureSource? {
         val prefs = appContext.getSharedPreferences(this::class.java.name, MODE_PRIVATE)
         val current = prefs.getStoredSource()
 

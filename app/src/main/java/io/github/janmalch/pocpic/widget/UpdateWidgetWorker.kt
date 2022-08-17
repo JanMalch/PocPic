@@ -12,7 +12,7 @@ class UpdateWidgetWorker(appContext: Context, workerParams: WorkerParameters) :
     override suspend fun doWork(): Result {
         val source = SourceProvider
             .createInstance(applicationContext)
-            .yieldSource()
+            .yieldSource(useStoredSource = false)
             ?: return Result.failure()
 
         sendUpdateWidgetIntent(applicationContext, source)

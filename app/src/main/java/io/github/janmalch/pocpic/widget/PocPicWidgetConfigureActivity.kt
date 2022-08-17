@@ -56,7 +56,7 @@ class PocPicWidgetConfigureActivity : ComponentActivity() {
             updateAppWidget(
                 context,
                 appWidgetId,
-                SourceProvider.createInstance(context).yieldSource(),
+                SourceProvider.createInstance(context).yieldSource(useStoredSource = true),
                 widgetShape
             )
 
