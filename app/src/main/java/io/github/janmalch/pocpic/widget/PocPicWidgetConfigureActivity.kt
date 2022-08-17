@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import io.github.janmalch.pocpic.data.SourceProvider
 import io.github.janmalch.pocpic.ui.theme.PocPicTheme
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * The configuration screen for the [PocPicWidget] AppWidget.
@@ -45,14 +44,10 @@ class PocPicWidgetConfigureActivity : ComponentActivity() {
         }
     }
 
-    private fun onFinish(
-        widgetConfiguration: WidgetConfiguration,
-        allWidgetsConfiguration: AllWidgetsConfiguration,
-    ) {
+    private fun onFinish(widgetShape: WidgetShape) {
         val context = this@PocPicWidgetConfigureActivity
 
-        WidgetConfiguration.store(context, appWidgetId, widgetConfiguration)
-        AllWidgetsConfiguration.store(context, allWidgetsConfiguration)
+        WidgetShape.store(context, appWidgetId, widgetShape)
 
         lifecycleScope.launch {
             // It is the responsibility of the configuration activity to update the app widget
@@ -60,7 +55,7 @@ class PocPicWidgetConfigureActivity : ComponentActivity() {
                 context,
                 appWidgetId,
                 SourceProvider.createInstance(context).yieldSource(),
-                widgetConfiguration
+                widgetShape
             )
 
             // Make sure we pass back the original appWidgetId

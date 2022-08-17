@@ -48,7 +48,7 @@ class PocPicWidget : AppWidgetProvider() {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
         for (appWidgetId in appWidgetIds) {
-            WidgetConfiguration.delete(context, appWidgetId)
+            WidgetShape.delete(context, appWidgetId)
         }
     }
 
@@ -67,13 +67,9 @@ class PocPicWidget : AppWidgetProvider() {
     }
 
     override fun onEnabled(context: Context) {
-        val configuration = AllWidgetsConfiguration.load(context)
-        if (configuration.refreshDurationInMinutes <= 0) {
-            cancelRefresh(context)
-            return
-        }
+        // FIXME: interval from preferences
         val periodicWorkRequest =
-            PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofMinutes(configuration.refreshDurationInMinutes))
+            PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofMinutes(30L))
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiresBatteryNotLow(true)
@@ -89,10 +85,6 @@ class PocPicWidget : AppWidgetProvider() {
     }
 
     override fun onDisabled(context: Context) {
-        cancelRefresh(context)
-    }
-
-    private fun cancelRefresh(context: Context) {
         WorkManager.getInstance(context).cancelUniqueWork(UNIQUE_WORK_NAME)
     }
 
@@ -107,7 +99,7 @@ internal fun updateAppWidget(
     context: Context,
     appWidgetId: Int,
     source: PictureSource?,
-    configuration: WidgetConfiguration = WidgetConfiguration.load(context, appWidgetId)
+    shape: WidgetShape = WidgetShape.load(context, appWidgetId)
 ) {
     if (source == null) {
         return
@@ -116,7 +108,7 @@ internal fun updateAppWidget(
     val views = RemoteViews(
         context.packageName,
         // apparently Glide's scale type does not work in RemoteViews
-        when (configuration.shape) {
+        when (shape) {
             WidgetShape.Circle -> R.layout.poc_pic_widget_fit_center
             WidgetShape.CenterCropRectangle -> R.layout.poc_pic_widget_center_crop
             else -> R.layout.poc_pic_widget_fit_center
@@ -145,10 +137,10 @@ internal fun updateAppWidget(
         Glide
             .with(context.applicationContext)
             .asBitmap()
-            .useCircleCrop(use = configuration.shape == WidgetShape.Circle)
+            .useCircleCrop(use = shape == WidgetShape.Circle)
             .useRoundedCorners(
-                use = configuration.shape == WidgetShape.FitCenterRectangle,
-                roundingRadius = configuration.cornerRadiusForFitCenter.dpToPx(context)
+                use = shape == WidgetShape.FitCenterRectangle,
+                roundingRadius = 32.dpToPx(context)
             )
             .load(source.imageModel)
             .listener(object : RequestListener<Bitmap> {
