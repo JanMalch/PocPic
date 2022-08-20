@@ -51,9 +51,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.request.RequestOptions
 import com.google.modernstorage.photopicker.PhotoPicker
+import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 import io.github.janmalch.pocpic.R
 import io.github.janmalch.pocpic.data.SourceFactoryConfig
+import io.github.janmalch.pocpic.extensions.darken
 import io.github.janmalch.pocpic.extensions.getFileName
 import io.github.janmalch.pocpic.models.PictureSource
 import io.github.janmalch.pocpic.ui.components.FullScreenDialog
@@ -96,10 +98,11 @@ fun ConfigScreen(
 
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
                 items(allConfigs.entries.toList()) { (config, factory) ->
-                    // TODO: should this be in a VM?
                     SourceListItem(
                         config = config,
-                        source = factory.nextPictureSource(),
+                        source = remember {
+                            factory.nextPictureSource()
+                        },
                         onRemove = {
                             vm.remove(config)
                         }
@@ -334,6 +337,13 @@ fun SourceListItem(
                     .override(40, 40)
                     .centerCrop()
             },
+            shimmerParams = ShimmerParams(
+                baseColor = MaterialTheme.colorScheme.background.darken(0.2f),
+                highlightColor = MaterialTheme.colorScheme.background.darken(0.3f),
+                durationMillis = 500,
+                dropOff = 0.65f,
+                tilt = 20f
+            ),
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape),
