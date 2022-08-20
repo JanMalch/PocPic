@@ -101,4 +101,7 @@ dependencies {
 
     // immutable collections
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+
+    // material components (for dark mode theme)
+    implementation 'com.google.android.material:material:1.6.1'
 }

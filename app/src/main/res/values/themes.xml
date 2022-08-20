@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.PocPic" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.PocPic" parent="Theme.MaterialComponents.DayNight" />
     <style name="Theme.PocPic.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
         <!-- Radius of the outer bound of widgets to make the rounded corners -->
         <item name="appWidgetRadius">0dp</item>
