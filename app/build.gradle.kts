@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "io.github.janmalch.pocpic"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "io.github.janmalch.pocpic"
         minSdk = 26 // v26 for LocalDateTime
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.ui)
+    implementation(libs.bundles.ui.widget)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -80,10 +82,17 @@ dependencies {
     ksp(libs.room.compiler)
     testImplementation(libs.room.testing)
 
-    implementation(libs.hilt)
+    implementation(libs.bundles.hilt)
     kapt(libs.hilt.compiler)
     androidTestImplementation(libs.hilt.testing)
     kaptAndroidTest(libs.hilt.compiler)
+
+    implementation(libs.okhttp)
+    implementation(libs.androidx.documentfile)
+
+    ksp(libs.ui.navigation.ksp)
+
+    implementation(libs.androidx.datastore.preferences)
 }
 
 // Allow references to generated code
