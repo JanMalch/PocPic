@@ -93,6 +93,9 @@ dependencies {
     ksp(libs.ui.navigation.ksp)
 
     implementation(libs.androidx.datastore.preferences)
+
+    // material components (for dark mode theme)
+    implementation(libs.material)
 }
 
 // Allow references to generated code
