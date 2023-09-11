@@ -72,7 +72,10 @@ fun SourcesScreen(
             CenterAlignedTopAppBar(
                 navigationIcon = {
                     IconButton(onClick = { dispatch(SourcesScreenIntent.NavigateUp) }) {
-                        Icon(Icons.Outlined.ArrowBack, contentDescription = "TODO")
+                        Icon(
+                            Icons.Outlined.ArrowBack,
+                            contentDescription = stringResource(R.string.navigate_back)
+                        )
                     }
                 },
                 title = { Text(stringResource(R.string.app_name)) },
@@ -85,7 +88,10 @@ fun SourcesScreen(
                             )
                         )
                     }) {
-                        Icon(Icons.Outlined.Code, contentDescription = "OSS licenses")
+                        Icon(
+                            Icons.Outlined.Code,
+                            contentDescription = stringResource(R.string.oss_licenses)
+                        )
                     }
 
                 }
@@ -95,7 +101,7 @@ fun SourcesScreen(
             FloatingActionButton(onClick = {
                 dispatch(SourcesScreenIntent.NewSource)
             }) {
-                Icon(Icons.Outlined.Add, contentDescription = "TODO")
+                Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.new_source))
             }
         }
     ) { paddingValues ->

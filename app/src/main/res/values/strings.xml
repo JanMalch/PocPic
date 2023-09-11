@@ -26,4 +26,6 @@
     <string name="shape_fit_center_rectangle">Fit Center</string>
     <string name="shape_fit_center_rectangle_explanation">Shows entire picture, but might not fill the entire widget.</string>
     <string name="app_widget_description">The configurable PocPic widget.</string>
+    <string name="oss_licenses">Open source licenses</string>
+    <string name="navigate_back">Navigate back</string>
 </resources>
