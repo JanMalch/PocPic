@@ -29,7 +29,6 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
                         .setRequiresBatteryNotLow(true)
                         .build()
                 )
-                .setInitialDelay(Duration.ZERO)
                 .build()
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             UNIQUE_WORK_NAME,

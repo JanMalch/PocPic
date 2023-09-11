@@ -16,6 +16,7 @@ class UpdateWidgetWorker @AssistedInject constructor(
     private val getRandomPicture: GetRandomPicture,
 ) :
     CoroutineWorker(appContext, workerParams) {
+
     override suspend fun doWork(): Result {
         try {
             getRandomPicture()

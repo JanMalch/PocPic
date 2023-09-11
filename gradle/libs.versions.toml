@@ -14,6 +14,7 @@ activity-compose = "1.7.2"
 compose-bom = "2023.08.00"
 room = "2.5.2"
 hilt = "2.44"
+android-hilt = "1.0.0"
 ksp = "1.8.10-1.0.9"
 coroutines = "1.7.3"
 icons = "1.5.0"
@@ -55,13 +56,15 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-android-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "android-hilt" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-viewmodel = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "1.0.0" }
+hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "android-hilt" }
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "android-hilt" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -71,7 +74,7 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" 
 
 [bundles]
 ui = ["activity-compose", "ui", "ui.graphics", "ui.tooling.preview", "material3", "ui-icons-extended", "ui-images", "ui-navigation", "hilt-viewmodel"]
-hilt = ["hilt", "hilt-viewmodel", "hilt-common"]
+hilt = ["hilt", "hilt-viewmodel", "hilt-common", "hilt-work"]
 ui-debug = ["ui-tooling", "ui-test-manifest"]
 ui-widget = ["androidx-glance-appwidget", "androidx-glance-material3"]
 room = ["room-runtime", "room-ktx"]
