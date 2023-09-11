@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -41,18 +40,19 @@ sealed interface MainScreenIntent {
 @Composable
 fun MainScreen(
     navigator: DestinationsNavigator,
-    vm: MainViewModel = hiltViewModel()
+    vm: MainViewModel,
 ) {
     val picture by vm.currentSource.collectAsState(initial = null)
-    MainScreen(picture = picture, dispatch = {
-        when (it) {
-            MainScreenIntent.OpenList -> navigator.navigate(SourcesScreenDestination)
-            is MainScreenIntent.ChangePicture -> vm.changePicture()
-            is MainScreenIntent.SharePicture -> {
-                /* TODO */
+    MainScreen(
+        picture = picture,
+        dispatch = {
+            when (it) {
+                MainScreenIntent.OpenList -> navigator.navigate(SourcesScreenDestination)
+                is MainScreenIntent.ChangePicture -> vm.changePicture()
+                is MainScreenIntent.SharePicture -> vm.shareCurrentSource()
             }
-        }
-    })
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
