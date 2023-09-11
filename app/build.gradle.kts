@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     id("kotlin-parcelize")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -99,6 +100,10 @@ dependencies {
 
     // material components (for dark mode theme)
     implementation(libs.material)
+
+    implementation(libs.google.oss.licenses) {
+        exclude(group = "androidx.appcompat")
+    }
 }
 
 // Allow references to generated code

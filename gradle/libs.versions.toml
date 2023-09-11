@@ -24,6 +24,8 @@ documentfile = "1.0.1"
 destinations = "1.9.50"
 hilt-navigation-compose = "1.0.0"
 work-runtime-ktx = "2.8.1"
+google-oss = "17.0.1"
+google-oss-plugin = "0.10.6"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -65,6 +67,8 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "android-hilt" }
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "android-hilt" }
+google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "google-oss" }
+google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "google-oss-plugin" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
