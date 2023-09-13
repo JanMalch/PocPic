@@ -11,6 +11,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import io.github.janmalch.pocpic.widget.configuration.WidgetConfigurationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,7 +68,7 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
         )
         Log.d("PocPicWidgetReceiver", "Widget size changed to ${width}x$height.")
         CoroutineScope(Dispatchers.Unconfined).launch {
-            WidgetConfiguration(context, Dispatchers.IO).set(
+            WidgetConfigurationRepository(context, Dispatchers.IO).set(
                 width = width,
                 height = height,
             )

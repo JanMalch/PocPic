@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".widget.PocPicWidgetConfigureActivity"
+            android:name=".widget.configuration.PocPicWidgetConfigureActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

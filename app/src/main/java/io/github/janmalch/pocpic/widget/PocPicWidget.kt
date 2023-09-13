@@ -43,7 +43,7 @@ class PocPicWidget : GlanceAppWidget() {
         Image(
             provider = ImageProvider(picture.bitmap),
             contentDescription = picture.picture.label,
-            contentScale = ContentScale.Crop,
+            contentScale = if (picture.widgetMustCrop) ContentScale.Crop else ContentScale.Fit,
             modifier = GlanceModifier
                 .fillMaxSize()
                 .cornerRadius(32.dp)

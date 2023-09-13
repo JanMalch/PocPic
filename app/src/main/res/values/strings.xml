@@ -17,15 +17,16 @@
     <string name="required_unsplash_input">Unsplash Tags</string>
     <string name="clear_url_input">Clear URL input</string>
 
+    <string name="app_widget_description">The configurable PocPic widget.</string>
+    <string name="oss_licenses">Open source licenses</string>
+    <string name="navigate_back">Navigate back</string>
+
+    <string name="select_shape">Select shape</string>
+    <string name="swap_picture">Swap picture</string>
     <string name="shape_circle">Circle</string>
     <string name="shape_circle_explanation">Crops the biggest circle from the center.</string>
-    <string name="shape_square">Square</string>
-    <string name="shape_square_explanation">Crops the biggest square from the center.</string>
     <string name="shape_center_crop_rectangle">Center Crop</string>
     <string name="shape_center_crop_rectangle_explanation">Fills the entire widget, but picture might be cropped.</string>
     <string name="shape_fit_center_rectangle">Fit Center</string>
     <string name="shape_fit_center_rectangle_explanation">Shows entire picture, but might not fill the entire widget.</string>
-    <string name="app_widget_description">The configurable PocPic widget.</string>
-    <string name="oss_licenses">Open source licenses</string>
-    <string name="navigate_back">Navigate back</string>
 </resources>

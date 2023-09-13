@@ -1,17 +1,18 @@
-package io.github.janmalch.pocpic.widget
+package io.github.janmalch.pocpic.widget.configuration
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.activity.viewModels
 import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.janmalch.pocpic.ui.theme.PocPicTheme
+import io.github.janmalch.pocpic.widget.PocPicWidget
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * The configuration screen for the [PocPicWidget] AppWidget.
@@ -19,6 +20,11 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PocPicWidgetConfigureActivity : ComponentActivity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
+
+    private val viewModel by viewModels<WidgetConfigurationViewModel>()
+
+    @Inject
+    lateinit var repository: WidgetConfigurationRepository
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +49,20 @@ class PocPicWidgetConfigureActivity : ComponentActivity() {
 
         setContent {
             PocPicTheme {
-                // TODO: make image shape configurable
-                Button(onClick = { onFinish() }) {
-                    Text("OK")
-                }
+                WidgetConfigurationScreen(
+                    vm = viewModel,
+                    onSelect = ::onFinish,
+                )
             }
         }
     }
 
-    private fun onFinish() {
+    private fun onFinish(shape: WidgetConfiguration.Shape) {
         val context = this@PocPicWidgetConfigureActivity
 
         lifecycleScope.launch {
+            repository.set(shape)
+
             // It is the responsibility of the configuration activity to update the app widget
             PocPicWidget().updateAll(context)
 
