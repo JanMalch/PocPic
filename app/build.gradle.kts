@@ -1,6 +1,5 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    kotlin("kapt")
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.com.google.dagger.hilt.android)
@@ -39,17 +38,17 @@ android {
     }
     compileOptions {
         // Java 17 for landscapist: https://github.com/skydoves/landscapist/issues/298#issuecomment-1569903376
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "18"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -60,9 +59,11 @@ android {
     }
 }
 
+/*
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(18)
 }
+*/
 
 dependencies {
 
@@ -86,10 +87,10 @@ dependencies {
     testImplementation(libs.room.testing)
 
     implementation(libs.bundles.hilt)
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.testing)
-    kaptAndroidTest(libs.hilt.compiler)
+    kspAndroidTest(libs.hilt.compiler)
 
     implementation(libs.okhttp)
     implementation(libs.androidx.documentfile)
@@ -104,9 +105,4 @@ dependencies {
     implementation(libs.google.oss.licenses) {
         exclude(group = "androidx.appcompat")
     }
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
 }
