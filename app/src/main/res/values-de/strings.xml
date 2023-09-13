@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PocPic</string>
+    <string name="open_list">Liste öffnen</string>
+    <string name="share_picture">Bild teilen</string>
+    <string name="type_remote">Internet</string>
+    <string name="type_local_file">Datei</string>
+    <string name="type_local_directory">Ordner</string>
+    <string name="new_source">Neue Quelle</string>
+    <string name="edit_source">Quelle bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="save">Speichern</string>
+    <string name="required_label_input">Name</string>
+    <string name="required_weight_input">Gewichtung</string>
+    <string name="weight_explanation">Quellen mit höherer Gewichtung werden öfters genutzt. Standard ist 1.</string>
+    <string name="required_url_input">URL</string>
+    <string name="unsplash">Unsplash</string>
+    <string name="required_unsplash_input">Unsplash Tags</string>
+    <string name="clear_url_input">URL-Feld leeren</string>
+    <string name="app_widget_description">Das konfigurierbare PocPic Widget.</string>
+    <string name="oss_licenses">Open-Source-Lizenzen</string>
+    <string name="navigate_back">Zurück navigieren</string>
+    <string name="select_shape">Form auswählen</string>
+    <string name="swap_picture">Bild wechseln</string>
+    <string name="shape_circle">Kreis</string>
+    <string name="shape_circle_explanation">Schneidet den größten Kreis mittig aus.</string>
+    <string name="shape_center_crop_rectangle">Ausfüllen</string>
+    <string name="shape_center_crop_rectangle_explanation">Füllt das gesamte Widget aus, aber das Bild wird ggf. abgeschnitten.</string>
+    <string name="shape_fit_center_rectangle">Einfassen</string>
+    <string name="shape_fit_center_rectangle_explanation">Zeigt das gesamte Bild, aber das Widget wird ggf. nicht voll ausgefüllt.</string>
+</resources>
