@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -45,16 +46,16 @@ val Typography = Typography(
 )
 
 
-private val types = Typography::class.java.declaredFields.mapNotNull {
-    it.isAccessible = true
-    val style = it.get(Typography) as? TextStyle ?: return@mapNotNull null
-    it.name to style
-}.sortedBy { it.first }
-
-
 @Preview
 @Composable
 internal fun TypographyPreview() {
+    val types = remember {
+        Typography::class.java.declaredFields.mapNotNull {
+            it.isAccessible = true
+            val style = it.get(Typography) as? TextStyle ?: return@mapNotNull null
+            it.name to style
+        }.sortedBy { it.first }
+    }
 
     PocPicTheme(darkTheme = false) {
         Surface {
