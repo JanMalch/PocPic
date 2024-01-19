@@ -22,7 +22,7 @@ class UpdateWidgetWorker @AssistedInject constructor(
             getRandomPicture()
         } catch (e: Exception) {
             Log.e("UpdateWidgetWorker", "Failed to get random picture to update widget.", e)
-            return Result.failure()
+            return if (runAttemptCount < 3) Result.retry() else Result.failure()
         }
         return Result.success()
     }

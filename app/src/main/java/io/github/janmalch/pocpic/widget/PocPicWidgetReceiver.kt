@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
@@ -25,6 +26,10 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
 
         val periodicWorkRequest =
             PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofDays(1L))
+                .setBackoffCriteria(
+                    BackoffPolicy.EXPONENTIAL,
+                    Duration.ofMinutes(1L),
+                )
                 .setConstraints(
                     Constraints.Builder()
                         .setRequiresBatteryNotLow(true)
