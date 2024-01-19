@@ -48,7 +48,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
@@ -58,12 +58,6 @@ android {
         }
     }
 }
-
-/*
-kotlin {
-    jvmToolchain(18)
-}
-*/
 
 dependencies {
 
