@@ -11,18 +11,18 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
-compose-bom = "2023.10.01"
+compose-bom = "2024.02.02"
 room = "2.6.1"
-hilt = "2.48"
-android-hilt = "1.1.0"
+hilt = "2.51"
+android-hilt = "1.2.0"
 ksp = "1.9.22-1.0.16"
-coroutines = "1.7.3"
-icons = "1.5.4"
-landscapist = "2.2.8"
-okhttp = "4.11.0"
+coroutines = "1.8.0"
+icons = "1.6.3"
+landscapist = "2.3.2"
+okhttp = "4.12.0"
 documentfile = "1.0.1"
-destinations = "1.9.53"
-hilt-navigation-compose = "1.1.0"
+destinations = "1.10.2"
+hilt-navigation-compose = "1.2.0"
 work-runtime-ktx = "2.9.0"
 google-oss = "17.0.1"
 google-oss-plugin = "0.10.6"
@@ -77,7 +77,7 @@ com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", versio
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
-ui = ["activity-compose", "ui", "ui.graphics", "ui.tooling.preview", "material3", "ui-icons-extended", "ui-images", "ui-navigation", "hilt-viewmodel"]
+ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons-extended", "ui-images", "ui-navigation", "hilt-viewmodel"]
 hilt = ["hilt", "hilt-viewmodel", "hilt-common", "hilt-work"]
 ui-debug = ["ui-tooling", "ui-test-manifest"]
 ui-widget = ["androidx-glance-appwidget", "androidx-glance-material3"]
