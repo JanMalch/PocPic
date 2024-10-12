@@ -2,7 +2,7 @@ package io.github.janmalch.pocpic.widget.configuration
 
 import androidx.annotation.Px
 
-data class WidgetConfiguration(
+data class WidgetData(
     @Px val width: Int,
     @Px val height: Int,
     val shape: Shape,

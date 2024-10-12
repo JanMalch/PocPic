@@ -57,7 +57,7 @@ class PocPicWidgetConfigureActivity : ComponentActivity() {
         }
     }
 
-    private fun onFinish(shape: WidgetConfiguration.Shape) {
+    private fun onFinish(shape: WidgetData.Shape) {
         val context = this@PocPicWidgetConfigureActivity
 
         lifecycleScope.launch {

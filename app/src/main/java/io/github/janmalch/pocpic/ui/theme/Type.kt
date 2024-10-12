@@ -3,7 +3,7 @@ package io.github.janmalch.pocpic.ui.theme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
@@ -62,7 +62,7 @@ internal fun TypographyPreview() {
             Column {
                 Text(text = "${types.size} Typographies:")
                 Spacer(modifier = Modifier.height(8.dp))
-                Divider(thickness = 1.dp, color = Color.LightGray)
+                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
                 types.forEach { (name, style) ->
                     Spacer(modifier = Modifier.height(8.dp))

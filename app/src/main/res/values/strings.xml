@@ -1,25 +1,8 @@
 <resources>
     <string name="app_name">PocPic</string>
-    <string name="open_list">Open list</string>
     <string name="share_picture">Share picture</string>
-    <string name="type_remote">Remote</string>
-    <string name="type_local_file">File</string>
-    <string name="type_local_directory">Folder</string>
-    <string name="new_source">New source</string>
-    <string name="edit_source">Edit source</string>
-    <string name="delete">Delete</string>
-    <string name="save">Save</string>
-    <string name="required_label_input">Label</string>
-    <string name="required_weight_input">Weight</string>
-    <string name="weight_explanation">Sources with a higher weight will be shown more often. Default is 1.</string>
-    <string name="required_url_input">URL</string>
-    <string name="unsplash">Unsplash</string>
-    <string name="required_unsplash_input">Unsplash Tags</string>
-    <string name="clear_url_input">Clear URL input</string>
 
     <string name="app_widget_description">The configurable PocPic widget.</string>
-    <string name="oss_licenses">Open source licenses</string>
-    <string name="navigate_back">Navigate back</string>
 
     <string name="select_shape">Select shape</string>
     <string name="swap_picture">Swap picture</string>
@@ -29,4 +12,10 @@
     <string name="shape_center_crop_rectangle_explanation">Fills the entire widget, but picture might be cropped.</string>
     <string name="shape_fit_center_rectangle">Fit Center</string>
     <string name="shape_fit_center_rectangle_explanation">Shows entire picture, but might not fill the entire widget.</string>
+
+    <string name="error_while_changing_picture">An unknown error occurred while changing picture.</string>
+    <string name="error_while_sharing_picture">An unknown error occurred while sharing picture.</string>
+    <string name="open_menu">Open menu</string>
+    <string name="change_directory">Change directory</string>
+    <string name="view_licenses">View licenses</string>
 </resources>

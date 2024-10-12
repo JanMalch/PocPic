@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_package = "io.github.janmalch.pocpic.models";
+option java_multiple_files = true;
+
+message AppData {
+  // The URI of the selected directory. Can be null, if none was selected yet.
+  optional string directory_uri = 1;
+}
+
+message PictureState {
+  // The currently selected picture. Can be null, if no directory is picked yet.
+  optional Picture picture = 1;
+}
+
+message Picture {
+  // The URI of the selected picture
+  string file_uri = 1;
+  // The name of the selected picture
+  string file_name = 2;
+  // The associated timestamp for this picture, usually the date it was taken.
+  google.protobuf.Timestamp file_date = 3;
+}
+
+enum WidgetShape {
+  // Fills the entire widget, but picture might be cropped.
+  CENTER_CROP = 0;
+  // Shows entire picture, but might not fill the entire widget.
+  FIT_CENTER = 1;
+  // Crops the biggest circle from the center.
+  CIRCLE = 2;
+}
+
+message WidgetConfiguration {
+  // Interval indicating how often the widget should be rerolled.
+  int64 intervalInMinutes = 1;
+  // The selected shape for the widget.
+  WidgetShape shape = 2;
+  // The corner radius of the image in DP; only applicable for the FIT_CENTER shape.
+  int32 cornerRadius = 3;
+}

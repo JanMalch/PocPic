@@ -47,7 +47,7 @@ import io.github.janmalch.pocpic.R
 @Composable
 fun WidgetConfigurationScreen(
     vm: WidgetConfigurationViewModel,
-    onSelect: (WidgetConfiguration.Shape) -> Unit,
+    onSelect: (WidgetData.Shape) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -79,8 +79,8 @@ fun WidgetConfigurationScreen(
 
                         val uri by vm.selectedUri.collectAsState(initial = null)
 
-                        WidgetConfiguration.Shape.values().forEach { shape ->
-                            ShapeDemo(shape = shape, uri = uri, onClick = {
+                        WidgetData.Shape.entries.forEach { shape ->
+                            ShapeDemo(shape = shape, uri = uri?.let(Uri::parse), onClick = {
                                 onSelect(shape)
                             })
                         }
@@ -94,7 +94,7 @@ fun WidgetConfigurationScreen(
 
 @Composable
 fun ShapeDemo(
-    shape: WidgetConfiguration.Shape,
+    shape: WidgetData.Shape,
     uri: Uri?,
     onClick: () -> Unit,
 ) {
@@ -109,17 +109,18 @@ fun ShapeDemo(
             modifier = Modifier.height(140.dp),
             contentAlignment = Alignment.Center
         ) {
+            // FIXME: replace with coil
             GlideImage(
                 imageModel = { uri },
                 // previewPlaceholder = R.drawable.example_appwidget_preview,
                 imageOptions = ImageOptions(
                     contentScale = when (shape) {
-                        WidgetConfiguration.Shape.FitCenterRectangle -> ContentScale.Fit
+                        WidgetData.Shape.FitCenterRectangle -> ContentScale.Fit
                         else -> ContentScale.Crop
                     },
                     alignment = Alignment.Center
                 ),
-                modifier = if (shape == WidgetConfiguration.Shape.Circle)
+                modifier = if (shape == WidgetData.Shape.Circle)
                     Modifier
                         .aspectRatio(1f)
                         .clip(CircleShape)
@@ -144,9 +145,9 @@ fun ShapeDemo(
         Text(
             text = stringResource(
                 when (shape) {
-                    WidgetConfiguration.Shape.Circle -> R.string.shape_circle
-                    WidgetConfiguration.Shape.CenterCropRectangle -> R.string.shape_center_crop_rectangle
-                    WidgetConfiguration.Shape.FitCenterRectangle -> R.string.shape_fit_center_rectangle
+                    WidgetData.Shape.Circle -> R.string.shape_circle
+                    WidgetData.Shape.CenterCropRectangle -> R.string.shape_center_crop_rectangle
+                    WidgetData.Shape.FitCenterRectangle -> R.string.shape_fit_center_rectangle
                 }
             ),
             modifier = Modifier.padding(top = 8.dp)
@@ -154,9 +155,9 @@ fun ShapeDemo(
         Text(
             text = stringResource(
                 when (shape) {
-                    WidgetConfiguration.Shape.Circle -> R.string.shape_circle_explanation
-                    WidgetConfiguration.Shape.CenterCropRectangle -> R.string.shape_center_crop_rectangle_explanation
-                    WidgetConfiguration.Shape.FitCenterRectangle -> R.string.shape_fit_center_rectangle_explanation
+                    WidgetData.Shape.Circle -> R.string.shape_circle_explanation
+                    WidgetData.Shape.CenterCropRectangle -> R.string.shape_center_crop_rectangle_explanation
+                    WidgetData.Shape.FitCenterRectangle -> R.string.shape_fit_center_rectangle_explanation
                 }
             ),
             style = MaterialTheme.typography.bodySmall,
@@ -173,7 +174,7 @@ fun ShapeDemo(
 @Composable
 internal fun ShapeDemoCircle() {
     ShapeDemo(
-        shape = WidgetConfiguration.Shape.Circle,
+        shape = WidgetData.Shape.Circle,
         uri = Uri.parse("https://images.unsplash.com/photo-1633722715463-d30f4f325e24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"),
         onClick = {}
     )
@@ -184,7 +185,7 @@ internal fun ShapeDemoCircle() {
 @Composable
 internal fun ShapeDemoCenterCropRectangle() {
     ShapeDemo(
-        shape = WidgetConfiguration.Shape.CenterCropRectangle,
+        shape = WidgetData.Shape.CenterCropRectangle,
         uri = Uri.parse("https://images.unsplash.com/photo-1633722715463-d30f4f325e24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"),
         onClick = {}
     )
@@ -194,7 +195,7 @@ internal fun ShapeDemoCenterCropRectangle() {
 @Composable
 internal fun ShapeDemoFitCenterRectangle() {
     ShapeDemo(
-        shape = WidgetConfiguration.Shape.FitCenterRectangle,
+        shape = WidgetData.Shape.FitCenterRectangle,
         uri = Uri.parse("https://images.unsplash.com/photo-1633722715463-d30f4f325e24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"),
         onClick = {}
     )

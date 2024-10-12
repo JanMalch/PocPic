@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.com.google.protobuf)
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
 }
@@ -29,6 +30,7 @@ android {
     buildTypes {
         val release = getByName("release") {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -64,12 +66,32 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = libs.protoc.get().toString()
+    }
+    // https://github.com/google/protobuf-gradle-plugin/issues/518#issuecomment-1273099797
+    // https://github.com/zhaobozhen/LibChecker/blob/c0c3bc7c661fe45cc44d5c6ab0202764652e0b7e/app/build.gradle.kts#L197
+    generateProtoTasks {
+        all().forEach {
+            it.builtins {
+                create("java") {
+                    option("lite")
+                }
+                create("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
 dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.ui)
+    implementation("androidx.compose.material3:material3:1.3.0")
     implementation(libs.bundles.ui.widget)
     implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
@@ -79,11 +101,9 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.bundles.ui.debug)
 
+    implementation(libs.coil)
     implementation(libs.bundles.coroutines)
-
-    implementation(libs.bundles.room)
-    ksp(libs.room.compiler)
-    testImplementation(libs.room.testing)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.compiler)
@@ -91,11 +111,9 @@ dependencies {
     androidTestImplementation(libs.hilt.testing)
     kspAndroidTest(libs.hilt.compiler)
 
-    implementation(libs.okhttp)
     implementation(libs.androidx.documentfile)
 
-    ksp(libs.ui.navigation.ksp)
-
+    implementation(libs.bundles.datastore)
     implementation(libs.androidx.datastore.preferences)
 
     // material components (for dark mode theme)

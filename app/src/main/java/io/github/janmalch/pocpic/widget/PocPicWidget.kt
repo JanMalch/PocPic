@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.glance.Button
 import androidx.glance.GlanceId
@@ -19,19 +18,26 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.fillMaxSize
 import io.github.janmalch.pocpic.ui.MainActivity
+import kotlinx.coroutines.flow.first
 
 class PocPicWidget : GlanceAppWidget() {
 
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val watchSelectedPicture = WatchSelectedPictureWithBitmap.create(context).invoke()
+        val initial = watchSelectedPicture.first()
+
         provideContent {
-            val watchSelectedPicture = remember { WatchSelectedPictureWithBitmap.create(context) }
-            val current by watchSelectedPicture().collectAsState(initial = null)
+            val current by watchSelectedPicture.collectAsState(initial = initial)
             WidgetImage(picture = current)
         }
     }
 
     @Composable
     fun WidgetImage(picture: PictureWithBitmap?) {
+        // FIXME: only do this, if there is actually no picture.
+        // Try to retain current picture on error.
+
         if (picture == null) {
             Button(
                 text = "Open PocPic to get started!",
@@ -42,7 +48,7 @@ class PocPicWidget : GlanceAppWidget() {
 
         Image(
             provider = ImageProvider(picture.bitmap),
-            contentDescription = picture.picture.label,
+            contentDescription = picture.picture.fileName,
             contentScale = if (picture.widgetMustCrop) ContentScale.Crop else ContentScale.Fit,
             modifier = GlanceModifier
                 .fillMaxSize()

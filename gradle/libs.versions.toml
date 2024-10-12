@@ -1,8 +1,10 @@
 [versions]
 agp = "8.7.0"
 appcompat = "1.7.0"
-datastore-preferences = "1.1.1"
+coil = "3.0.0-rc01"
+datastore = "1.1.1"
 glance-appwidget = "1.1.0"
+kotlinx-datetime = "0.6.1"
 material = "1.12.0"
 kotlin = "2.0.21"
 core-ktx = "1.13.1"
@@ -12,31 +14,33 @@ espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.6"
 activity-compose = "1.9.2"
 compose-bom = "2024.09.03"
-room = "2.6.1"
 hilt = "2.52"
 android-hilt = "1.2.0"
 ksp = "2.0.21-1.0.25"
 coroutines = "1.9.0"
-icons = "1.7.3"
+icons = "1.7.3" # FIXME: needed?!
 landscapist = "2.3.2"
-okhttp = "4.12.0"
 documentfile = "1.0.1"
-destinations = "1.10.2"
 hilt-navigation-compose = "1.2.0"
 work-runtime-ktx = "2.9.1"
 google-oss = "17.1.0"
 google-oss-plugin = "0.10.6"
+protobuf = "3.23.2" # "3.23.3" is broken
+protobuf-plugin = "0.9.3"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance-appwidget" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -49,26 +53,21 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 ui-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons" }
 ui-images = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "landscapist" }
-ui-navigation = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "destinations" }
-ui-navigation-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "destinations" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-android-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "android-hilt" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
-hilt-viewmodel = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "android-hilt" }
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "android-hilt" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "google-oss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "google-oss-plugin" }
+protobuf-java = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobuf" }
+protobuf-kotlin = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -76,11 +75,12 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
 
 [bundles]
-ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons-extended", "ui-images", "ui-navigation", "hilt-viewmodel"]
-hilt = ["hilt", "hilt-viewmodel", "hilt-common", "hilt-work"]
+ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons-extended", "ui-images"]
+hilt = ["hilt", "hilt-common", "hilt-work"]
 ui-debug = ["ui-tooling", "ui-test-manifest"]
 ui-widget = ["androidx-glance-appwidget", "androidx-glance-material3"]
-room = ["room-runtime", "room-ktx"]
 coroutines = ["coroutines-core", "coroutines-android"]
+datastore = ["androidx-datastore", "protobuf-java", "protobuf-kotlin"]
