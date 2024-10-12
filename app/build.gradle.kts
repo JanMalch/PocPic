@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
 }
@@ -64,6 +65,11 @@ android {
     }
 }
 
+extensions.configure<com.google.devtools.ksp.gradle.KspExtension> {
+    arg("room.schemaLocation", File(projectDir, "schemas").path)
+    arg("room.generateKotlin", "true")
+}
+
 dependencies {
 
     implementation(libs.core.ktx)
@@ -79,7 +85,10 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.bundles.ui.debug)
 
+    implementation(libs.coil)
     implementation(libs.bundles.coroutines)
+    implementation(libs.serialization.json)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)

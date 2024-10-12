@@ -6,15 +6,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -32,13 +33,14 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import io.github.janmalch.pocpic.R
-import io.github.janmalch.pocpic.domain.Source
+import io.github.janmalch.pocpic.core.Logger
+import io.github.janmalch.pocpic.data.SourceEntity
 import io.github.janmalch.pocpic.ui.destinations.SourceDialogDestination
 
 sealed interface SourcesScreenIntent {
-    object NavigateUp : SourcesScreenIntent
-    object NewSource : SourcesScreenIntent
-    data class EditSource(val source: Source) : SourcesScreenIntent
+    data object NavigateUp : SourcesScreenIntent
+    data object NewSource : SourcesScreenIntent
+    data class EditSource(val source: SourceEntity) : SourcesScreenIntent
 }
 
 @Destination
@@ -48,8 +50,10 @@ fun SourcesScreen(
     vm: SourcesViewModel = hiltViewModel()
 ) {
     val sources by vm.sources.collectAsState(initial = emptyList())
+    val logs by vm.logs.collectAsState(initial = emptyList())
     SourcesScreen(
         sources = sources,
+        logs = logs,
         dispatch = {
             when (it) {
                 SourcesScreenIntent.NavigateUp -> navigator.navigateUp()
@@ -63,7 +67,8 @@ fun SourcesScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SourcesScreen(
-    sources: List<Source>,
+    sources: List<SourceEntity>,
+    logs: List<Logger.Entry>,
     dispatch: (SourcesScreenIntent) -> Unit
 ) {
     val context = LocalContext.current
@@ -117,15 +122,20 @@ fun SourcesScreen(
             ) {
                 itemsIndexed(items = sources) { index, it ->
                     ListItem(
-                        leadingContent = { SourceTypeIcon(it.type) },
                         headlineContent = { Text(it.label) },
                         modifier = Modifier.clickable {
                             dispatch(SourcesScreenIntent.EditSource(it))
                         }
                     )
                     if (index < sources.lastIndex) {
-                        Divider()
+                        HorizontalDivider()
                     }
+                }
+                // FIXME: temporary
+                items(items = logs) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                    Text(it.timestamp.toString(), modifier = Modifier.padding(bottom = 8.dp))
+                    Text((it.message + "\n\n" + (it.stackTrace ?: "")).trim())
                 }
             }
         }

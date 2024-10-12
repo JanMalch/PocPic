@@ -9,46 +9,37 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
-import io.github.janmalch.pocpic.shared.IoDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "widget_configuration")
 
-
 class WidgetConfigurationRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
-    private val MAX_WIDTH = intPreferencesKey("max_width")
-    private val MAX_HEIGHT = intPreferencesKey("max_height")
-    private val SHAPE = stringPreferencesKey("shape")
-
+    companion object {
+        private val MAX_WIDTH = intPreferencesKey("max_width")
+        private val MAX_HEIGHT = intPreferencesKey("max_height")
+        private val SHAPE = stringPreferencesKey("shape")
+    }
 
     fun watch(): Flow<WidgetConfiguration> {
-        return context.dataStore.data.flowOn(ioDispatcher).map { it.read() }
+        return context.dataStore.data.map { it.read() }
     }
 
     suspend fun set(@Px width: Int, @Px height: Int) {
         if (width <= 0 || height <= 0) return
-        withContext(ioDispatcher) {
-            context.dataStore.edit {
-                it[MAX_WIDTH] = width
-                it[MAX_HEIGHT] = height
-            }
+        context.dataStore.edit {
+            it[MAX_WIDTH] = width
+            it[MAX_HEIGHT] = height
         }
     }
 
     suspend fun set(shape: WidgetConfiguration.Shape) {
-        withContext(ioDispatcher) {
-            context.dataStore.edit {
-                it[SHAPE] = shape.name
-            }
+        context.dataStore.edit {
+            it[SHAPE] = shape.name
         }
     }
 

@@ -2,6 +2,7 @@ package io.github.janmalch.pocpic.data
 
 import android.content.Context
 import android.net.Uri
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
@@ -15,43 +16,30 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import androidx.room.Update
-import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.parcelize.Parcelize
 
 class Converters {
     @TypeConverter
-    fun toSourceType(value: String) = enumValueOf<SourceEntity.Type>(value)
+    fun toUri(value: String): Uri = Uri.parse(value)
 
     @TypeConverter
-    fun fromSourceType(value: SourceEntity.Type) = value.name
-
-    @TypeConverter
-    fun toUri(value: String) = Uri.parse(value)
-
-    @TypeConverter
-    fun fromUri(value: Uri) = value.toString()
+    fun fromUri(value: Uri): String = value.toString()
 
 }
 
 private const val tableName = "sources"
 
+@Parcelize
 @Entity(tableName = tableName)
 data class SourceEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo val label: String,
     @ColumnInfo val uri: Uri,
-    @ColumnInfo val type: Type,
     @ColumnInfo val weight: Int,
-    @ColumnInfo val isRemoteRedirect: Boolean,
-) {
+) : Parcelable {
     init {
         require(weight > 0) { "Weight must be positive." }
-    }
-
-    enum class Type {
-        REMOTE,
-        LOCAL_FILE,
-        LOCAL_DIRECTORY,
     }
 }
 
@@ -64,7 +52,7 @@ interface SourceDao {
     fun findAll(): List<SourceEntity>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(sources: List<SourceEntity>)
+    suspend fun insert(source: SourceEntity)
 
     @Update
     suspend fun update(source: SourceEntity)
@@ -73,7 +61,7 @@ interface SourceDao {
     suspend fun remove(id: Long)
 }
 
-@Database(entities = [SourceEntity::class], version = 1, exportSchema = false)
+@Database(entities = [SourceEntity::class], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun sourcesDao(): SourceDao
@@ -93,18 +81,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .addCallback(object : Callback() {
-                        override fun onOpen(db: SupportSQLiteDatabase) {
-                            super.onOpen(db)
-
-                            db.execSQL(
-                                """INSERT INTO $tableName (label, uri, type, weight, isRemoteRedirect)
-                                | SELECT 'Nature (unsplash.com)', 'https://source.unsplash.com/random?nature', 'REMOTE', 1, 1
-                                | WHERE NOT EXISTS (SELECT * FROM $tableName)
-                            """.trimMargin()
-                            )
-                        }
-                    })
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 return instance

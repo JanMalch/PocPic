@@ -1,4 +1,4 @@
-package io.github.janmalch.pocpic.domain
+package io.github.janmalch.pocpic.core
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -9,16 +9,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.glance.appwidget.updateAll
 import dagger.hilt.android.qualifiers.ApplicationContext
-import io.github.janmalch.pocpic.shared.IoDispatcher
 import io.github.janmalch.pocpic.shared.toLocalDateTimeOrNull
 import io.github.janmalch.pocpic.shared.toUriOrNull
 import io.github.janmalch.pocpic.widget.PocPicWidget
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,20 +24,22 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 @Singleton
 class SelectedPicture @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val logger: Logger,
 ) {
 
-    private val SOURCE_ID = longPreferencesKey("source_id")
-    private val URI = stringPreferencesKey("uri")
-    private val LABEL = stringPreferencesKey("label")
-    private val DATE = stringPreferencesKey("date")
+    companion object {
+        private val SOURCE_ID = longPreferencesKey("source_id")
+        private val URI = stringPreferencesKey("uri")
+        private val LABEL = stringPreferencesKey("label")
+        private val DATE = stringPreferencesKey("date")
+    }
 
     suspend fun get(): Picture? {
-        return withContext(ioDispatcher) { context.dataStore.data.firstOrNull()?.read() }
+        return context.dataStore.data.firstOrNull()?.read()
     }
 
     fun watch(): Flow<Picture?> {
-        return context.dataStore.data.flowOn(ioDispatcher).map { it.read() }
+        return context.dataStore.data.map { it.read() }
     }
 
     private fun Preferences.read(): Picture? {
@@ -51,15 +50,19 @@ class SelectedPicture @Inject constructor(
         return Picture(uri, label, sourceId, date)
     }
 
-    suspend fun set(picture: Picture) {
-        withContext(ioDispatcher) {
-            context.dataStore.edit {
-                it[SOURCE_ID] = picture.sourceId
-                it[URI] = picture.uri.toString()
-                it[LABEL] = picture.label
-                it[DATE] = picture.date?.toString() ?: ""
-            }
-            PocPicWidget().updateAll(context)
+    suspend fun set(picture: Picture): Unit = try {
+        context.dataStore.edit {
+            it[SOURCE_ID] = picture.sourceId
+            it[URI] = picture.uri.toString()
+            it[LABEL] = picture.label
+            it[DATE] = picture.date?.toString() ?: ""
         }
+        PocPicWidget().updateAll(context)
+        logger.info("Notified widgets of update.")
+    } catch (e: Exception) {
+        if (e !is CancellationException) {
+            logger.error("Error while setting current picture and notifying widget.", e)
+        }
+        throw e
     }
 }

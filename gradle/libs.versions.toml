@@ -1,8 +1,10 @@
 [versions]
 agp = "8.7.0"
 appcompat = "1.7.0"
+coil = "3.0.0-rc01"
 datastore-preferences = "1.1.1"
 glance-appwidget = "1.1.0"
+kotlinx-datetime = "0.6.1"
 material = "1.12.0"
 kotlin = "2.0.21"
 core-ktx = "1.13.1"
@@ -26,6 +28,7 @@ hilt-navigation-compose = "1.2.0"
 work-runtime-ktx = "2.9.1"
 google-oss = "17.1.0"
 google-oss-plugin = "0.10.6"
+json = "1.7.3"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -33,10 +36,12 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance-appwidget" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -69,6 +74,7 @@ hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "an
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "android-hilt" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "google-oss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "google-oss-plugin" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "json" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -76,6 +82,7 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons-extended", "ui-images", "ui-navigation", "hilt-viewmodel"]

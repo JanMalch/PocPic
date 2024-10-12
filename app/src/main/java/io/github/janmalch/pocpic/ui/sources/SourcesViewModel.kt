@@ -3,48 +3,63 @@ package io.github.janmalch.pocpic.ui.sources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.janmalch.pocpic.domain.InsertSources
-import io.github.janmalch.pocpic.domain.RemoveSource
-import io.github.janmalch.pocpic.domain.Source
-import io.github.janmalch.pocpic.domain.UpdateSource
-import io.github.janmalch.pocpic.domain.WatchSources
+import io.github.janmalch.pocpic.core.Logger
+import io.github.janmalch.pocpic.core.SourceRepository
+import io.github.janmalch.pocpic.data.SourceEntity
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class SourcesViewModel @Inject constructor(
-    watchSources: WatchSources,
-    private val insertSources: InsertSources,
-    private val updateSource: UpdateSource,
-    private val removeSource: RemoveSource,
+    private val sourceRepository: SourceRepository,
+    private val logger: Logger,
 ) : ViewModel() {
 
-    val sources = watchSources()
+    // FIXME: temporary
+    val logs = suspend { logger.getAll() }.asFlow()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(0),
+            initialValue = emptyList(),
+        )
 
-    private val _closeScreen = MutableSharedFlow<Unit>(replay = 0)
-    val closeScreen: Flow<Unit> = _closeScreen
+    val sources = sourceRepository.watchAll()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList(),
+        )
 
-    fun insert(sources: List<Source>) {
+    private val _closeScreen = Channel<Unit>()
+    val closeScreen: Flow<Unit> = _closeScreen.receiveAsFlow()
+
+    // FIXME: error feedback
+
+    fun insert(source: SourceEntity) {
         viewModelScope.launch {
-            insertSources.invoke(sources)
-            _closeScreen.emit(Unit)
+            sourceRepository.insert(source)
+            _closeScreen.send(Unit)
         }
     }
 
-    fun update(update: Source, previous: Source) {
+    fun update(update: SourceEntity) {
         viewModelScope.launch {
-            updateSource.invoke(update, previous)
-            _closeScreen.emit(Unit)
+            sourceRepository.update(update)
+            _closeScreen.send(Unit)
         }
     }
 
-    fun remove(source: Source) {
+    fun remove(source: SourceEntity) {
         viewModelScope.launch {
-            removeSource.invoke(source)
-            _closeScreen.emit(Unit)
+            sourceRepository.remove(source)
+            _closeScreen.send(Unit)
         }
     }
 

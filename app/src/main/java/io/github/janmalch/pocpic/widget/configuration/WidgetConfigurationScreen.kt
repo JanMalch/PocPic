@@ -109,6 +109,7 @@ fun ShapeDemo(
             modifier = Modifier.height(140.dp),
             contentAlignment = Alignment.Center
         ) {
+            // FIXME: replace with coil
             GlideImage(
                 imageModel = { uri },
                 // previewPlaceholder = R.drawable.example_appwidget_preview,

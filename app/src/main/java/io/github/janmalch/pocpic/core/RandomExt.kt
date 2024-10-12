@@ -1,4 +1,4 @@
-package io.github.janmalch.pocpic.domain
+package io.github.janmalch.pocpic.core
 
 import kotlin.random.Random
 

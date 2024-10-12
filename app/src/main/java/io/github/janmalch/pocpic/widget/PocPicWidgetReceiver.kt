@@ -73,7 +73,7 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
         )
         Log.d("PocPicWidgetReceiver", "Widget size changed to ${width}x$height.")
         CoroutineScope(Dispatchers.Unconfined).launch {
-            WidgetConfigurationRepository(context, Dispatchers.IO).set(
+            WidgetConfigurationRepository(context).set(
                 width = width,
                 height = height,
             )

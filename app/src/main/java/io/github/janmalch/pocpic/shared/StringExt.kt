@@ -1,7 +1,7 @@
 package io.github.janmalch.pocpic.shared
 
 import android.net.Uri
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 fun String?.toUriOrNull(): Uri? = if (this == null) null else try {
     Uri.parse(this)
