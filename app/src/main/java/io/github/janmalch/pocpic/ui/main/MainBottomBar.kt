@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -17,11 +14,9 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,40 +54,25 @@ fun MainBottomBar(
             // TODO: find a way to share web images
             val enabled = remember(picture) { picture?.uri?.scheme == "content" }
 
-            CompositionLocalProvider(
-                LocalRippleTheme provides
-                        if (enabled) LocalRippleTheme.current else NoRippleTheme
+            // FIXME: ripple was removed after dependency updates
+            FloatingActionButton(
+                containerColor = if (enabled) BottomAppBarDefaults.bottomAppBarFabColor
+                else BottomAppBarDefaults.bottomAppBarFabColor.copy(alpha = 0.4f),
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                onClick = {
+                    if (enabled && picture != null) {
+                        dispatch(MainScreenIntent.SharePicture(picture))
+                    }
+                },
             ) {
-                FloatingActionButton(
-                    containerColor = if (enabled) BottomAppBarDefaults.bottomAppBarFabColor
-                    else BottomAppBarDefaults.bottomAppBarFabColor.copy(alpha = 0.4f),
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                    onClick = {
-                        if (enabled && picture != null) {
-                            dispatch(MainScreenIntent.SharePicture(picture))
-                        }
-                    },
-                ) {
-                    Icon(
-                        Icons.Outlined.Share,
-                        modifier = if (enabled) Modifier else Modifier.alpha(0.4f),
-                        contentDescription = stringResource(R.string.open_list)
-                    )
-                }
+                Icon(
+                    Icons.Outlined.Share,
+                    modifier = if (enabled) Modifier else Modifier.alpha(0.4f),
+                    contentDescription = stringResource(R.string.open_list)
+                )
             }
         }
     )
-}
-
-/**
- * @author https://stackoverflow.com/a/68853697
- */
-private object NoRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Color.Unspecified
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleAlpha(0.0f, 0.0f, 0.0f, 0.0f)
 }
 
 
