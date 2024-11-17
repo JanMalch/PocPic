@@ -4,16 +4,23 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -24,15 +31,21 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +65,8 @@ import kotlinx.datetime.toJavaInstant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 private infix fun DateTimeFormatter.format(timestamp: Timestamp): String =
     format(Instant.fromEpochSeconds(timestamp.seconds, timestamp.nanos).toJavaInstant())
@@ -60,9 +75,11 @@ private infix fun DateTimeFormatter.format(timestamp: Timestamp): String =
 @Composable
 fun PictureScreen(
     picture: Picture?,
+    interval: () -> Duration,
     onPictureClicked: () -> Unit,
     onDirectorySelected: (Uri) -> Unit,
     onGoToLicenses: () -> Unit,
+    onChangeInterval: (Duration) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
@@ -81,8 +98,10 @@ fun PictureScreen(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
                     MoreMenu(
+                        interval = interval,
                         onDirectorySelected = onDirectorySelected,
                         onGoToLicenses = onGoToLicenses,
+                        onChangeInterval = onChangeInterval,
                     )
                 }
             )
@@ -136,10 +155,13 @@ fun PictureScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MoreMenu(
+    interval: () -> Duration,
     onDirectorySelected: (Uri) -> Unit,
     onGoToLicenses: () -> Unit,
+    onChangeInterval: (Duration) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val pickDirectory = rememberDirectoryPicker { uri ->
@@ -147,6 +169,7 @@ private fun MoreMenu(
             onDirectorySelected(uri)
         }
     }
+    var isIntervalDialogVisible by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .wrapContentSize(Alignment.TopStart)
@@ -170,12 +193,86 @@ private fun MoreMenu(
                 }
             )
             DropdownMenuItem(
+                text = { Text(text = stringResource(R.string.change_widget_update_interval)) },
+                onClick = {
+                    isIntervalDialogVisible = true
+                    expanded = false
+                }
+            )
+            DropdownMenuItem(
                 text = { Text(text = stringResource(R.string.view_licenses)) },
                 onClick = {
                     onGoToLicenses()
                     expanded = false
                 }
             )
+        }
+    }
+
+    if (isIntervalDialogVisible) {
+        var current by rememberSaveable { mutableStateOf(interval().inWholeMinutes.toString(10)) }
+        val parsed by remember {
+            derivedStateOf {
+                current.trim().toIntOrNull(10)?.minutes
+            }
+        }
+        val isError by remember {
+            derivedStateOf {
+                parsed?.takeIf { it >= 15.minutes } == null
+            }
+        }
+        BasicAlertDialog(
+            onDismissRequest = { isIntervalDialogVisible = false }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                shape = MaterialTheme.shapes.large,
+                tonalElevation = AlertDialogDefaults.TonalElevation
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text(
+                        text = stringResource(R.string.change_widget_update_interval),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    Text(
+                        text = stringResource(R.string.interval_help),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                    )
+                    TextField(
+                        value = current,
+                        onValueChange = { current = it },
+                        isError = isError,
+                        suffix = { Text(stringResource(R.string.in_minutes)) },
+                        singleLine = true,
+                        supportingText = {
+                            Text(
+                                text = if (isError) stringResource(R.string.change_interval_validation_error)
+                                else (parsed?.toString() ?: "")
+                            )
+                        },
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        TextButton(onClick = { isIntervalDialogVisible = false }) {
+                            Text(text = stringResource(R.string.cancel))
+                        }
+                        TextButton(
+                            enabled = !isError,
+                            onClick = {
+                                parsed?.also(onChangeInterval)
+                                isIntervalDialogVisible = false
+                            },
+                        ) {
+                            Text(text = stringResource(R.string.ok))
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -18,4 +18,11 @@
     <string name="open_menu">Open menu</string>
     <string name="change_directory">Change directory</string>
     <string name="view_licenses">View licenses</string>
+    <string name="change_widget_update_interval">Change widget interval</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="change_interval_validation_error">Interval must be greater than or equal to 15 minutes.</string>
+    <string name="interval_help">Minimum is 15 minutes. One day (24h) are 1440 minutes.</string>
+    <string name="in_minutes">In minutes</string>
 </resources>

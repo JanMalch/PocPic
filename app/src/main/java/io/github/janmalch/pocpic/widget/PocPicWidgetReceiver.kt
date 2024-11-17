@@ -7,34 +7,23 @@ import android.os.Bundle
 import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
-import androidx.work.BackoffPolicy
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
+import io.github.janmalch.pocpic.core.AndroidWidgetRepository
 import io.github.janmalch.pocpic.widget.configuration.WidgetConfigurationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Duration
+import kotlinx.coroutines.runBlocking
+
+private const val TAG = "PocPicWidgetReceiver"
 
 class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = PocPicWidget()
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-
-        val periodicWorkRequest =
-            PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, Duration.ofDays(1L))
-                .setBackoffCriteria(
-                    BackoffPolicy.EXPONENTIAL,
-                    Duration.ofMinutes(1L),
-                )
-                .build()
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            UNIQUE_WORK_NAME,
-            ExistingPeriodicWorkPolicy.UPDATE,
-            periodicWorkRequest
-        )
+        runBlocking {
+            AndroidWidgetRepository.getInstance(context).enqueueWork()
+        }
     }
 
     override fun onUpdate(
@@ -75,11 +64,7 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
     }
 
     override fun onDisabled(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(UNIQUE_WORK_NAME)
-    }
-
-    companion object {
-        private const val UNIQUE_WORK_NAME = "PocPicWidget_PeriodicWorker"
+        UpdateWidgetWorker.cancel(context)
     }
 }
 

@@ -6,11 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.janmalch.pocpic.core.AppRepository
+import io.github.janmalch.pocpic.core.WidgetRepository
 import io.github.janmalch.pocpic.models.Picture
+import io.github.janmalch.pocpic.models.copy
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -18,12 +22,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 
 sealed interface AppUiState {
     data object Initializing : AppUiState
     data object Onboarding : AppUiState
-    data class Ready(val picture: Picture?) : AppUiState
+    data class Ready(val picture: Picture?, val interval: Duration) : AppUiState
 }
 
 private const val TAG = "MainViewModel"
@@ -32,6 +38,7 @@ private const val TAG = "MainViewModel"
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val repository: AppRepository,
+    private val widget: WidgetRepository,
 ) : ViewModel() {
 
     val appUiState = repository.watchSourceUri()
@@ -39,8 +46,12 @@ class AppViewModel @Inject constructor(
             if (source == null) {
                 flowOf(AppUiState.Onboarding)
             } else {
-                repository.watchSelectedPicture().map { picture ->
-                    AppUiState.Ready(picture)
+                combine(
+                    repository.watchSelectedPicture(),
+                    widget.watchWidgetConfiguration().map { it.intervalInMinutes.minutes }
+                        .distinctUntilChanged()
+                ) { picture, interval ->
+                    AppUiState.Ready(picture, interval)
                 }
             }
         }
@@ -73,6 +84,21 @@ class AppViewModel @Inject constructor(
                 if (e is CancellationException) throw e
                 Log.e(TAG, "Failed to change picture.", e)
                 _changeError.send(Unit)
+            }
+        }
+    }
+
+    fun changeInterval(duration: Duration) {
+        viewModelScope.launch {
+            try {
+                widget.updateWidgetConfiguration {
+                    copy {
+                        intervalInMinutes = duration.inWholeMinutes
+                    }
+                }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                Log.e(TAG, "Failed to set duration to $duration.", e)
             }
         }
     }

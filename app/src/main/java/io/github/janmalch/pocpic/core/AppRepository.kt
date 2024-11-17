@@ -10,7 +10,6 @@ import androidx.glance.appwidget.updateAll
 import io.github.janmalch.pocpic.models.AppData
 import io.github.janmalch.pocpic.models.Picture
 import io.github.janmalch.pocpic.models.PictureState
-import io.github.janmalch.pocpic.models.WidgetConfiguration
 import io.github.janmalch.pocpic.models.pictureOrNull
 import io.github.janmalch.pocpic.widget.PocPicWidget
 import kotlinx.coroutines.CancellationException
@@ -25,13 +24,9 @@ interface AppRepository {
 
     fun watchSelectedPicture(): Flow<Picture?>
 
-    fun watchWidgetConfiguration(): Flow<WidgetConfiguration?>
-
     suspend fun setSourceUri(uri: Uri)
 
     suspend fun reroll()
-
-    suspend fun updateWidgetConfiguration(block: WidgetConfiguration.() -> WidgetConfiguration)
 
 }
 
@@ -45,12 +40,6 @@ private val Context.pictureStore by dataStore(
     fileName = "picture.pb",
     serializer = PictureStateSerializer,
     corruptionHandler = ReplaceFileCorruptionHandler { PictureStateSerializer.defaultValue },
-)
-
-private val Context.widgetStore by dataStore(
-    fileName = "widget.pb",
-    serializer = WidgetConfigurationSerializer,
-    corruptionHandler = ReplaceFileCorruptionHandler { WidgetConfigurationSerializer.defaultValue },
 )
 
 private const val TAG = "AndroidAppRepository"
@@ -68,9 +57,6 @@ class AndroidAppRepository private constructor(
     override fun watchSelectedPicture(): Flow<Picture?> =
         context.pictureStore.data.map { it.pictureOrNull }.distinctUntilChanged()
 
-    override fun watchWidgetConfiguration(): Flow<WidgetConfiguration?> =
-        context.widgetStore.data.distinctUntilChanged()
-
     override suspend fun setSourceUri(uri: Uri) {
         val contentResolver = context.contentResolver
         getSourceUri()?.also { contentResolver.release(it) }
@@ -80,10 +66,6 @@ class AndroidAppRepository private constructor(
             AppData.newBuilder().setDirectoryUri(uri.toString()).build()
         }
         reroll()
-    }
-
-    override suspend fun updateWidgetConfiguration(block: WidgetConfiguration.() -> WidgetConfiguration) {
-        context.widgetStore.updateData { it.block() }
     }
 
     override suspend fun reroll() {

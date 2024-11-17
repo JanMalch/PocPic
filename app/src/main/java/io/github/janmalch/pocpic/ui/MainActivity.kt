@@ -58,8 +58,10 @@ class MainActivity : ComponentActivity() {
 
                             is AppUiState.Ready -> PictureScreen(
                                 picture = uiState.picture,
+                                interval = { uiState.interval },
                                 onDirectorySelected = mViewModel::changeDirectory,
                                 onPictureClicked = mViewModel::changePicture,
+                                onChangeInterval = mViewModel::changeInterval,
                                 onGoToLicenses = {
                                     startActivity(
                                         Intent(

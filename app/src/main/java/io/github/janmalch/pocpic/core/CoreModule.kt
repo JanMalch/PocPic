@@ -27,5 +27,11 @@ abstract class CoreModule {
             rerollPicture: RerollPicture,
             @ApplicationContext context: Context,
         ): AppRepository = AndroidAppRepository.getInstance(context, rerollPicture)
+
+        @Provides
+        @Singleton
+        fun providesWidgetRepository(
+            @ApplicationContext context: Context,
+        ): WidgetRepository = AndroidWidgetRepository.getInstance(context)
     }
 }

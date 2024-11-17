@@ -19,4 +19,10 @@
     <string name="open_menu">Menü öffnen</string>
     <string name="change_directory">Ordner ändern</string>
     <string name="view_licenses">Lizenzen ansehen</string>
+    <string name="change_interval_validation_error">Intervall muss größer oder gleich 15 Minuten sein.</string>
+    <string name="interval_help">Das Minimum ist 15 Minuten. Ein Tag (24h) sind 1440 Minuten.</string>
+    <string name="change_widget_update_interval">Widget-Intervall ändern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="ok">OK</string>
+    <string name="in_minutes">Minuten</string>
 </resources>
