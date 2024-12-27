@@ -27,6 +27,8 @@ google-oss = "17.1.0"
 google-oss-plugin = "0.10.6"
 protobuf = "3.23.2" # "3.23.3" is broken
 protobuf-plugin = "0.9.3"
+timber = "5.0.1"
+shed = "0.3.0"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -68,6 +70,9 @@ google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-lic
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobuf" }
 protobuf-kotlin = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+shed = { module = "io.github.janmalch:shed", version.ref = "shed" }
+shed-autoload = { module = "io.github.janmalch:shed-autoload", version.ref = "shed" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

@@ -55,6 +55,7 @@ android {
         jvmTarget = "18"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     packaging {
@@ -86,6 +87,9 @@ protobuf {
     }
 }
 dependencies {
+    implementation(libs.timber)
+    implementation(libs.shed)
+    implementation(libs.shed.autoload)
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

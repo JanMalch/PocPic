@@ -22,6 +22,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.janmalch.pocpic.R
 import io.github.janmalch.pocpic.ui.theme.PocPicTheme
+import io.github.janmalch.shed.Shed
 
 
 @AndroidEntryPoint
@@ -70,6 +71,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     )
                                 },
+                                onGoToLogs = { Shed.startActivity(this@MainActivity) },
                                 snackbarHostState = snackbarHostState,
                             )
                         }

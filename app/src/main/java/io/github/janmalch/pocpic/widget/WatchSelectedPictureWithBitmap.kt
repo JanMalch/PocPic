@@ -3,7 +3,6 @@ package io.github.janmalch.pocpic.widget
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import io.github.janmalch.pocpic.core.AndroidAppRepository
 import io.github.janmalch.pocpic.core.AndroidRerollPicture
 import io.github.janmalch.pocpic.core.AppRepository
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import kotlin.random.Random
 
 
@@ -33,30 +33,30 @@ class WatchSelectedPictureWithBitmap(
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(): Flow<PictureWithBitmap?> {
         return widgetConfigurationRepository.watch()
-            .onCompletion { Log.w(TAG, "Widget data flow has completed.") }
+            .onCompletion { Timber.w("Widget data flow has completed.") }
             .distinctUntilChanged()
-            .onEach { Log.d(TAG, "Widget data changed: $it") }
+            .onEach { Timber.d("Widget data changed: %s", it) }
             .flatMapLatest { config ->
                 repository.watchSelectedPicture()
-                    .onCompletion { Log.w(TAG, "Selected picture flow has completed.") }
+                    .onCompletion { Timber.w("Selected picture flow has completed.") }
                     .distinctUntilChanged { old, new -> old?.fileUri == new?.fileUri }
-                    .onEach { Log.d(TAG, "Picture changed: ${it?.fileName}") }
+                    .onEach { Timber.d("Picture changed: ${it?.fileName}") }
                     .mapLatest { picture ->
                         if (picture == null) {
-                            Log.d(TAG, "Got not picture to try to render for widget.")
+                            Timber.d("Got not picture to try to render for widget.")
                             return@mapLatest null
                         }
-                        Log.d(TAG, "Got picture to try to render for widget: ${picture.fileName}")
+                        Timber.d("Got picture to try to render for widget: %s", picture.fileName)
                         val bitmap = try {
                             bitmapRenderer(Uri.parse(picture.fileUri), config).also {
-                                Log.d(
-                                    TAG,
-                                    "Finished rendering bitmap for widget: ${picture.fileName}"
+                                Timber.d(
+                                    "Finished rendering bitmap for widget: %s",
+                                    picture.fileName
                                 )
                             }
                         } catch (e: Exception) {
                             if (e !is CancellationException) {
-                                Log.e(TAG, "Error while rendering to bitmap.", e)
+                                Timber.e(e, "Error while rendering to bitmap.")
                             }
                             throw e
                         }
@@ -68,10 +68,10 @@ class WatchSelectedPictureWithBitmap(
                     }
             }
             .catch {
-                Log.e(TAG, "Error occurred inside widget flow.", it)
+                Timber.e(it, "Error occurred inside widget flow.")
                 throw it
             }
-            .onCompletion { Log.w(TAG, "Combined widget flow has completed.") }
+            .onCompletion { Timber.d("Combined widget flow has completed.") }
     }
 
     companion object {

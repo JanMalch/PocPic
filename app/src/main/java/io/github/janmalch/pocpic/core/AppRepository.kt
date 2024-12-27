@@ -3,7 +3,6 @@ package io.github.janmalch.pocpic.core
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStore
 import androidx.glance.appwidget.updateAll
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 interface AppRepository {
 
@@ -73,12 +73,12 @@ class AndroidAppRepository private constructor(
             val source = getSourceUri() ?: return
             val previous = watchSelectedPicture().first()
             val next = rerollPicture(source, previous)
-            Log.d(TAG, "Reroll successful: ${previous?.fileName} -> ${next?.fileName}")
+            Timber.d("Reroll successful: %s -> %s", previous?.fileName, next?.fileName)
             context.pictureStore.updateData { PictureState.newBuilder().setPicture(next).build() }
             PocPicWidget().updateAll(context)
         } catch (e: Exception) {
             if (e !is CancellationException) {
-                Log.d(TAG, "Reroll failed.", e)
+                Timber.w(e, "Reroll failed.")
             }
             throw e
         }

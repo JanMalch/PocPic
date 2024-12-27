@@ -1,7 +1,6 @@
 package io.github.janmalch.pocpic.widget
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.CoroutineWorker
@@ -13,6 +12,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.github.janmalch.pocpic.core.AppRepository
 import kotlinx.coroutines.CancellationException
+import timber.log.Timber
 import java.time.Duration
 
 private const val TAG = "UpdateWidgetWorker"
@@ -27,14 +27,14 @@ class UpdateWidgetWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         try {
-            Log.d(TAG, "Rerolling for new picture.")
+            Timber.d("Rerolling for new picture.")
             repository.reroll()
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Log.e(
-                TAG,
-                "Failed to get random picture to update widget. Attempt #$runAttemptCount",
-                e
+            Timber.e(
+                e,
+                "Failed to get random picture to update widget. Attempt #%d",
+                runAttemptCount
             )
             return if (runAttemptCount < 3) Result.retry() else Result.failure()
         }
@@ -50,7 +50,7 @@ class UpdateWidgetWorker @AssistedInject constructor(
 
         fun enqueue(context: Context, repeatInterval: Duration) {
             val workManager = WorkManager.getInstance(context)
-            Log.d(TAG, "Re-enqueuing periodic work with repeat interval of $repeatInterval.")
+            Timber.d("Re-enqueuing periodic work with repeat interval of %s.", repeatInterval)
             val periodicWorkRequest =
                 PeriodicWorkRequest.Builder(UpdateWidgetWorker::class.java, repeatInterval)
                     .addTag("PocPic")

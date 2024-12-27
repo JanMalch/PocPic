@@ -25,4 +25,5 @@
     <string name="change_interval_validation_error">Interval must be greater than or equal to 15 minutes.</string>
     <string name="interval_help">Minimum is 15 minutes. One day (24h) are 1440 minutes.</string>
     <string name="in_minutes">In minutes</string>
+    <string name="view_logs">View logs</string>
 </resources>

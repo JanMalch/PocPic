@@ -2,7 +2,6 @@ package io.github.janmalch.pocpic.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -62,6 +61,7 @@ import io.github.janmalch.pocpic.ui.theme.Typography
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
+import timber.log.Timber
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -79,6 +79,7 @@ fun PictureScreen(
     onPictureClicked: () -> Unit,
     onDirectorySelected: (Uri) -> Unit,
     onGoToLicenses: () -> Unit,
+    onGoToLogs: () -> Unit,
     onChangeInterval: (Duration) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
@@ -102,6 +103,7 @@ fun PictureScreen(
                         onDirectorySelected = onDirectorySelected,
                         onGoToLicenses = onGoToLicenses,
                         onChangeInterval = onChangeInterval,
+                        onGoToLogs = onGoToLogs,
                     )
                 }
             )
@@ -127,7 +129,7 @@ fun PictureScreen(
                         }
                         context.startActivity(Intent.createChooser(intent, null))
                     } catch (e: Exception) {
-                        Log.e("PictureScreen", "Error while sharing picture.", e)
+                        Timber.e(e, "Error while sharing picture.")
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(context.getString(R.string.error_while_sharing_picture))
                         }
@@ -161,6 +163,7 @@ private fun MoreMenu(
     interval: () -> Duration,
     onDirectorySelected: (Uri) -> Unit,
     onGoToLicenses: () -> Unit,
+    onGoToLogs: () -> Unit,
     onChangeInterval: (Duration) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -203,6 +206,13 @@ private fun MoreMenu(
                 text = { Text(text = stringResource(R.string.view_licenses)) },
                 onClick = {
                     onGoToLicenses()
+                    expanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(text = stringResource(R.string.view_logs)) },
+                onClick = {
+                    onGoToLogs()
                     expanded = false
                 }
             )

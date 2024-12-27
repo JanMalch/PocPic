@@ -1,7 +1,6 @@
 package io.github.janmalch.pocpic.ui
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -70,7 +70,7 @@ class AppViewModel @Inject constructor(
                 repository.setSourceUri(source)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Log.e(TAG, "Failed to change directory.", e)
+                Timber.e(e, "Failed to change directory.")
                 // FIXME: feedback like _changeError.send(Unit)
             }
         }
@@ -82,7 +82,7 @@ class AppViewModel @Inject constructor(
                 repository.reroll()
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Log.e(TAG, "Failed to change picture.", e)
+                Timber.e(e, "Failed to change picture.")
                 _changeError.send(Unit)
             }
         }
@@ -98,7 +98,7 @@ class AppViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Log.e(TAG, "Failed to set duration to $duration.", e)
+                Timber.e(e, "Failed to set duration to %s.", duration.toString())
             }
         }
     }

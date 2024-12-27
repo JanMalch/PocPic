@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
-import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import io.github.janmalch.pocpic.core.AndroidWidgetRepository
@@ -13,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 private const val TAG = "PocPicWidgetReceiver"
 
@@ -54,7 +54,7 @@ class PocPicWidgetReceiver : GlanceAppWidgetReceiver() {
         val (width, height) = WidgetSizeProvider(context, appWidgetManager).getWidgetsSize(
             appWidgetId
         )
-        Log.d("PocPicWidgetReceiver", "Widget size changed to ${width}x$height.")
+        Timber.d("Widget size changed to %dx%d.", width, height)
         CoroutineScope(Dispatchers.Unconfined).launch {
             WidgetConfigurationRepository(context).set(
                 width = width,
