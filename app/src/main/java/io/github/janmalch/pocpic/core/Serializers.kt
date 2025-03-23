@@ -1,8 +1,8 @@
 package io.github.janmalch.pocpic.core
 
 import androidx.datastore.core.CorruptionException
+import androidx.datastore.core.IOException
 import androidx.datastore.core.Serializer
-import androidx.datastore.preferences.protobuf.InvalidProtocolBufferException
 import io.github.janmalch.pocpic.models.AppData
 import io.github.janmalch.pocpic.models.PictureState
 import io.github.janmalch.pocpic.models.WidgetConfiguration
@@ -16,7 +16,7 @@ object AppDataSerializer : Serializer<AppData> {
     override suspend fun readFrom(input: InputStream): AppData {
         try {
             return AppData.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
+        } catch (exception: IOException) {
             throw CorruptionException("Cannot read proto of AppDataSerializer.", exception)
         }
     }
@@ -30,7 +30,7 @@ object PictureStateSerializer : Serializer<PictureState> {
     override suspend fun readFrom(input: InputStream): PictureState {
         try {
             return PictureState.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
+        } catch (exception: IOException) {
             throw CorruptionException("Cannot read proto of PictureState.", exception)
         }
     }
@@ -47,7 +47,7 @@ object WidgetConfigurationSerializer : Serializer<WidgetConfiguration> {
     override suspend fun readFrom(input: InputStream): WidgetConfiguration {
         try {
             return WidgetConfiguration.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
+        } catch (exception: IOException) {
             throw CorruptionException("Cannot read proto of WidgetConfiguration.", exception)
         }
     }
