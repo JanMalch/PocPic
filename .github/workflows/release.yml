@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v3
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -27,10 +27,10 @@ jobs:
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Set up JDK 18
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: 18
+          java-version: '21'
+          distribution: 'temurin'
 
       - name: Accept Android licenses
         run: yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses || true
@@ -51,7 +51,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
       - name: Verify Signature
-        run: $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner verify --print-certs ./app/build/outputs/apk/releaseCi/app-releaseCi.apk
+        run: $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner verify --print-certs ./app/build/outputs/apk/releaseCi/app-releaseCi.apk
 
       - name: Create Release
         id: create_release
