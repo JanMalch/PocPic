@@ -27,12 +27,12 @@ val vCode = "%d%03d%03d".format(vMajor, vMinor, vPatch)
 
 android {
     namespace = "io.github.janmalch.pocpic"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.janmalch.pocpic"
         minSdk = 26 // v26 for LocalDateTime
-        targetSdk = 35
+        targetSdk = 36
         versionName = vName
         versionCode = vCode
 
@@ -110,7 +110,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.ui)
-    implementation("androidx.compose.material3:material3:1.3.0")
     implementation(libs.bundles.ui.widget)
     implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)

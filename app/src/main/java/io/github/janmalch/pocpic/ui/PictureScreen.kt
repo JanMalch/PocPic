@@ -59,15 +59,17 @@ import io.github.janmalch.pocpic.models.Picture
 import io.github.janmalch.pocpic.models.fileDateOrNull
 import io.github.janmalch.pocpic.ui.theme.Typography
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
 import timber.log.Timber
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.toJavaInstant
 
+@OptIn(ExperimentalTime::class)
 private infix fun DateTimeFormatter.format(timestamp: Timestamp): String =
     format(Instant.fromEpochSeconds(timestamp.seconds, timestamp.nanos).toJavaInstant())
 

@@ -1,37 +1,33 @@
 [versions]
 agp = "8.13.1"
-appcompat = "1.7.0"
-coil = "3.1.0"
-datastore = "1.1.4"
+coil = "3.3.0"
+datastore = "1.1.7"
 glance-appwidget = "1.1.1"
-kotlinx-datetime = "0.6.2"
-material = "1.12.0"
-kotlin = "2.1.20"
-core-ktx = "1.16.0"
+kotlinx-datetime = "0.7.1"
+material = "1.13.0"
+kotlin = "2.2.21"
+core-ktx = "1.17.0"
 junit = "4.13.2"
-androidx-test-ext-junit = "1.2.1"
-espresso-core = "3.6.1"
-lifecycle-runtime-ktx = "2.8.7"
-activity-compose = "1.10.1"
-compose-bom = "2025.04.00"
-hilt = "2.56.1"
-android-hilt = "1.2.0"
-ksp = "2.1.20-2.0.0"
+androidx-test-ext-junit = "1.3.0"
+espresso-core = "3.7.0"
+lifecycle-runtime-ktx = "2.9.4"
+activity-compose = "1.11.0"
+compose-bom = "2025.11.00"
+hilt = "2.57.2"
+android-hilt = "1.3.0"
+ksp = "2.2.21-2.0.4"
 coroutines = "1.10.2"
-icons = "1.7.8" # FIXME: needed?!
-landscapist = "2.4.7"
-documentfile = "1.0.1"
-hilt-navigation-compose = "1.2.0"
-work-runtime-ktx = "2.10.0"
-google-oss = "17.1.0"
-google-oss-plugin = "0.10.6"
-protobuf = "4.30.2"
+landscapist = "2.6.1"
+documentfile = "1.1.0"
+work-runtime-ktx = "2.11.0"
+google-oss = "17.3.0"
+google-oss-plugin = "0.10.9"
+protobuf = "4.33.1"
 protobuf-plugin = "0.9.5"
 timber = "5.0.1"
-shed = "0.3.0"
+shed = "0.4.1"
 
 [libraries]
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
@@ -53,7 +49,7 @@ ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-ui-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons" }
+ui-icons = { group = "androidx.compose.material", name = "material-icons-core" }
 ui-images = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "landscapist" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -83,7 +79,7 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" 
 com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
 
 [bundles]
-ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons-extended", "ui-images"]
+ui = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "ui-icons", "ui-images"]
 hilt = ["hilt", "hilt-common", "hilt-work"]
 ui-debug = ["ui-tooling", "ui-test-manifest"]
 ui-widget = ["androidx-glance-appwidget", "androidx-glance-material3"]
